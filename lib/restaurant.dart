@@ -37,7 +37,7 @@ class RestaurantData extends Equatable {
 
   factory RestaurantData.fromJson(Map<String, dynamic> json){
     return RestaurantData(
-      statusCode: json["statusCode"],
+      statusCode: (json["statusCode"] as num?)?.toInt(),
       data: json["data"] == null ? null : Data.fromJson(json["data"]),
       tid: json["tid"],
       sid: json["sid"],
@@ -106,8 +106,8 @@ class Data extends Equatable {
       pageOffset: json["pageOffset"] == null ? null : PageOffset.fromJson(json["pageOffset"]),
       cards: json["cards"] == null ? [] : List<CardElement>.from(json["cards"]!.map((x) => CardElement.fromJson(x))),
       firstOffsetRequest: json["firstOffsetRequest"],
-      cacheExpiryTime: json["cacheExpiryTime"],
-      nextFetch: json["nextFetch"],
+      cacheExpiryTime: (json["cacheExpiryTime"] as num?)?.toInt(),
+      nextFetch: (json["nextFetch"] as num?)?.toInt(),
     );
   }
 
@@ -1248,8 +1248,8 @@ class Sla extends Equatable {
 
   factory Sla.fromJson(Map<String, dynamic> json){
     return Sla(
-      deliveryTime: json["deliveryTime"],
-      lastMileTravel: json["lastMileTravel"],
+      deliveryTime: (json["deliveryTime"] as num?)?.toInt(),
+      lastMileTravel: (json["lastMileTravel"] as num?)?.toDouble(),
       serviceability: json["serviceability"],
       slaString: json["slaString"],
       lastMileTravelString: json["lastMileTravelString"],
@@ -1293,7 +1293,7 @@ class Layout extends Equatable {
 
   factory Layout.fromJson(Map<String, dynamic> json){
     return Layout(
-      columns: json["columns"],
+      columns: (json["columns"] as num?)?.toInt(),
     );
   }
 
