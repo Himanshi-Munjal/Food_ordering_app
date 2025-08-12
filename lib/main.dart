@@ -68,8 +68,8 @@ class _MyAppState extends State<MyApp> {
                   child: GridView.builder(
                     itemCount: restaurants.length,
                     gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 380,
                           mainAxisSpacing: 16,
                           crossAxisSpacing: 16,
                           mainAxisExtent: 290,
