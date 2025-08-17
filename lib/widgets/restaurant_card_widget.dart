@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class RestaurantCard extends StatelessWidget {
   final String imageUrl;
+  final VoidCallback? onTap;
   final String title;
   final double rating;
   final String time;
@@ -14,13 +15,17 @@ class RestaurantCard extends StatelessWidget {
     required this.title,
     required this.rating,
     required this.time,
+    this.onTap,
     required this.category,
     required this.location,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(18),
+    child : Card(
       elevation: 6,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       clipBehavior: Clip.antiAlias,
@@ -124,6 +129,6 @@ class RestaurantCard extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 }

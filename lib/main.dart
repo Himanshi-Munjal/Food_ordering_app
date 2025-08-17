@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/rendering.dart';
+import 'package:food_ordering/common/constants.dart';
+import 'package:food_ordering/pages/restaurant_detail_screen.dart';
 import 'package:food_ordering/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ordering/restaurant.dart';
@@ -14,7 +16,7 @@ void main() {
 
 Future<RestaurantData> fetchRestaurants() async {
   final response = await http.get(
-    Uri.parse('https://api.mocklets.com/p1131/getRestaurants'),
+    Uri.parse("$baseUrl/getRestaurants"),
   );
   if (response.statusCode == 200) {
     return RestaurantData.fromJson(
@@ -54,8 +56,7 @@ class _MyAppState extends State<MyApp> {
                     snapshot
                         .data
                         ?.data
-                        ?.cards
-                        ?.firstOrNull
+                        ?.cards[4]
                         ?.card
                         ?.card
                         ?.gridElements
@@ -99,6 +100,13 @@ class _MyAppState extends State<MyApp> {
                         time: sla,
                         category: cuisines,
                         location: restaurantArea,
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RestaurantDetailScreen(restaurantId: restaurants[index].info?.id ?? ""),),
+                          );
+                        },
                       );
                     },
                   ),
