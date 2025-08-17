@@ -2,11 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/rendering.dart';
 import 'package:food_ordering/common/constants.dart';
-import 'package:food_ordering/pages/restaurant_detail_screen.dart';
-import 'package:food_ordering/widget.dart';
+import 'package:food_ordering/restaurant_detail/ui/restaurant_detail_screen.dart';
+import 'package:food_ordering/restaurant_list/restaurant_card_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:food_ordering/restaurant.dart';
-import 'package:food_ordering/grid.dart';
+import 'package:food_ordering/restaurant_list/restaurant.dart';
 import 'package:http/http.dart' as http;
 
 void main() {

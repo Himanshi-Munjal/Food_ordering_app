@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering/widget.dart';
 import 'package:food_ordering/main.dart';
+import 'package:food_ordering/restaurant_list/restaurant_card_widget.dart';
 // Dummy Data List
 final List<Map<String, dynamic>> restaurantData = [
   {

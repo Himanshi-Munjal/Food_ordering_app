@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/menu_bloc.dart';
-import '../bloc/menu_events.dart';
-import '../bloc/menu_state.dart';
-import '../widgets/restaurant_detail_widget.dart';
+import 'package:food_ordering/restaurant_detail/ui/restaurant_detail_widget.dart';
+
+import '../bloc/restaurant_detail_bloc.dart';
+import '../bloc/restaurant_detail_events.dart';
+import '../bloc/restaurant_detail_state.dart';
+
 class RestaurantDetailScreen extends StatelessWidget {
   final String restaurantId;
   const RestaurantDetailScreen({super.key, required this.restaurantId});
@@ -11,7 +13,7 @@ class RestaurantDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MenuBloc()..add(FetchMenu(restaurantId)),
+      create: (context) => RestaurantDetailBloc()..add(FetchResDetail(restaurantId)),
       child: MenuView(),
     );
   }
@@ -23,11 +25,11 @@ class MenuView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Menu')),
-      body: BlocBuilder<MenuBloc, MenuState>(
+      body: BlocBuilder<RestaurantDetailBloc, RestaurantDetailState>(
         builder: (context, state) {
-          if (state is MenuLoading) {
+          if (state is ResDetailLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is MenuLoaded) {
+          } else if (state is ResDetailLoaded) {
             final menuItems = state.card.itemCards ?? [];
             if (menuItems.isEmpty) {
               return const Center(child: Text('No items found.'));
@@ -37,7 +39,7 @@ class MenuView extends StatelessWidget {
               separatorBuilder: (_, __) => const Divider(),
               itemBuilder: (context, idx) => RestaurantDetailWidget(item: menuItems[idx]),
             );
-          } else if (state is MenuError) {
+          } else if (state is ResDetailError) {
             return Center(child: Text(state.message));
           }
           return Container();
