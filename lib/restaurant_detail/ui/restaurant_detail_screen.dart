@@ -8,19 +8,22 @@ import '../bloc/restaurant_detail_state.dart';
 
 class RestaurantDetailScreen extends StatelessWidget {
   final String restaurantId;
+
   const RestaurantDetailScreen({super.key, required this.restaurantId});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => RestaurantDetailBloc()..add(FetchResDetail(restaurantId)),
-      child: MenuView(),
+      create: (context) => context.read<RestaurantDetailBloc>()
+        ..add(FetchResDetail(restaurantId)),
+      child: ResDetailView(),
     );
   }
 }
 
-// MenuView contains the UI with Scaffold and BlocBuilder
-class MenuView extends StatelessWidget {
+class ResDetailView extends StatelessWidget {
+  const ResDetailView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +40,8 @@ class MenuView extends StatelessWidget {
             return ListView.separated(
               itemCount: menuItems.length,
               separatorBuilder: (_, __) => const Divider(),
-              itemBuilder: (context, idx) => RestaurantDetailWidget(item: menuItems[idx]),
+              itemBuilder: (context, idx) =>
+                  RestaurantDetailWidget(item: menuItems[idx]),
             );
           } else if (state is ResDetailError) {
             return Center(child: Text(state.message));
@@ -48,6 +52,3 @@ class MenuView extends StatelessWidget {
     );
   }
 }
-
-
-
