@@ -1,12 +1,16 @@
 import '../models/card_card.dart';
+import '../models/item_card.dart';
 
 abstract class RestaurantDetailState {}
 class ResDetailInitial extends RestaurantDetailState {}
 class ResDetailLoading extends RestaurantDetailState {}
 class ResDetailLoaded extends RestaurantDetailState {
   final CardCard card;
-  ResDetailLoaded(this.card);
+  final int totalCartCount; // productId -> quantity
+  ResDetailLoaded(this.card, {int? totalCartCount})
+      : totalCartCount = totalCartCount ?? 0;
 }
+
 class ResDetailError extends RestaurantDetailState {
   final String message;
   ResDetailError(this.message);

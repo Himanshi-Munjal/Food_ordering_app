@@ -21,6 +21,7 @@ Info _$InfoFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Info {
   String? get id => throw _privateConstructorUsedError;
+  int get timesAddedIntoCart => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get category => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
@@ -59,6 +60,7 @@ abstract class $InfoCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
+      int timesAddedIntoCart,
       String? name,
       String? category,
       String? description,
@@ -106,6 +108,7 @@ class _$InfoCopyWithImpl<$Res, $Val extends Info>
   @override
   $Res call({
     Object? id = freezed,
+    Object? timesAddedIntoCart = null,
     Object? name = freezed,
     Object? category = freezed,
     Object? description = freezed,
@@ -133,6 +136,10 @@ class _$InfoCopyWithImpl<$Res, $Val extends Info>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      timesAddedIntoCart: null == timesAddedIntoCart
+          ? _value.timesAddedIntoCart
+          : timesAddedIntoCart // ignore: cast_nullable_to_non_nullable
+              as int,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -328,6 +335,7 @@ abstract class _$$InfoImplCopyWith<$Res> implements $InfoCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
+      int timesAddedIntoCart,
       String? name,
       String? category,
       String? description,
@@ -379,6 +387,7 @@ class __$$InfoImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? timesAddedIntoCart = null,
     Object? name = freezed,
     Object? category = freezed,
     Object? description = freezed,
@@ -406,6 +415,10 @@ class __$$InfoImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      timesAddedIntoCart: null == timesAddedIntoCart
+          ? _value.timesAddedIntoCart
+          : timesAddedIntoCart // ignore: cast_nullable_to_non_nullable
+              as int,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -499,6 +512,7 @@ class __$$InfoImplCopyWithImpl<$Res>
 class _$InfoImpl implements _Info {
   const _$InfoImpl(
       {this.id,
+      this.timesAddedIntoCart = 0,
       this.name,
       this.category,
       this.description,
@@ -528,6 +542,9 @@ class _$InfoImpl implements _Info {
 
   @override
   final String? id;
+  @override
+  @JsonKey()
+  final int timesAddedIntoCart;
   @override
   final String? name;
   @override
@@ -589,7 +606,7 @@ class _$InfoImpl implements _Info {
 
   @override
   String toString() {
-    return 'Info(id: $id, name: $name, category: $category, description: $description, imageId: $imageId, inStock: $inStock, isVeg: $isVeg, variants: $variants, variantsV2: $variantsV2, addons: $addons, itemAttribute: $itemAttribute, defaultPrice: $defaultPrice, ribbon: $ribbon, showImage: $showImage, itemBadge: $itemBadge, badgesV2: $badgesV2, isBestseller: $isBestseller, ratings: $ratings, itemPriceStrikeOff: $itemPriceStrikeOff, imageBadges: $imageBadges, parentId: $parentId, price: $price)';
+    return 'Info(id: $id, timesAddedIntoCart: $timesAddedIntoCart, name: $name, category: $category, description: $description, imageId: $imageId, inStock: $inStock, isVeg: $isVeg, variants: $variants, variantsV2: $variantsV2, addons: $addons, itemAttribute: $itemAttribute, defaultPrice: $defaultPrice, ribbon: $ribbon, showImage: $showImage, itemBadge: $itemBadge, badgesV2: $badgesV2, isBestseller: $isBestseller, ratings: $ratings, itemPriceStrikeOff: $itemPriceStrikeOff, imageBadges: $imageBadges, parentId: $parentId, price: $price)';
   }
 
   @override
@@ -598,6 +615,8 @@ class _$InfoImpl implements _Info {
         (other.runtimeType == runtimeType &&
             other is _$InfoImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.timesAddedIntoCart, timesAddedIntoCart) ||
+                other.timesAddedIntoCart == timesAddedIntoCart) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.category, category) ||
                 other.category == category) &&
@@ -639,6 +658,7 @@ class _$InfoImpl implements _Info {
   int get hashCode => Object.hashAll([
         runtimeType,
         id,
+        timesAddedIntoCart,
         name,
         category,
         description,
@@ -681,6 +701,7 @@ class _$InfoImpl implements _Info {
 abstract class _Info implements Info {
   const factory _Info(
       {final String? id,
+      final int timesAddedIntoCart,
       final String? name,
       final String? category,
       final String? description,
@@ -707,6 +728,8 @@ abstract class _Info implements Info {
 
   @override
   String? get id;
+  @override
+  int get timesAddedIntoCart;
   @override
   String? get name;
   @override

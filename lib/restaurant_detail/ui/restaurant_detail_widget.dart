@@ -15,11 +15,6 @@ class RestaurantDetailWidget extends StatefulWidget {
 }
 
 class _RestaurantDetailWidgetState extends State<RestaurantDetailWidget> {
-  int count = 0;
-
-  void increment() => setState(() => count++);
-
-  void decrement() => setState(() => count > 0 ? count-- : count);
 
   @override
   Widget build(BuildContext context) => Card(
@@ -89,7 +84,7 @@ class _RestaurantDetailWidgetState extends State<RestaurantDetailWidget> {
                     SizedBox(height: 10),
                     Align(
                       alignment: Alignment.bottomRight,
-                      child: count == 0
+                      child: widget.item.card?.info?.timesAddedIntoCart == 0
                           ? ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green[600],
@@ -101,7 +96,8 @@ class _RestaurantDetailWidgetState extends State<RestaurantDetailWidget> {
                               onPressed: () {
                                 context.read<RestaurantDetailBloc>().add(
                                     AddToCart(
-                                        widget.item.card?.info?.id ?? ""));
+                                        widget.item.card?.info?.id ?? ""
+                                    ));
                               },
                               child: const Text('ADD',
                                   style: TextStyle(
@@ -122,14 +118,19 @@ class _RestaurantDetailWidgetState extends State<RestaurantDetailWidget> {
                                   IconButton(
                                     icon: Icon(Icons.remove_circle,
                                         color: Colors.red, size: 28),
-                                    onPressed: decrement,
+                                    onPressed: () {
+                                      context.read<RestaurantDetailBloc>().add(
+                                          DeleteFromCart(
+                                              widget.item.card?.info?.id ?? ""
+                                          ));
+                                    },
                                     splashRadius: 20,
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 7),
                                     child: Text(
-                                      '$count',
+                                      '${widget.item.card?.info?.timesAddedIntoCart}',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18),
@@ -138,7 +139,12 @@ class _RestaurantDetailWidgetState extends State<RestaurantDetailWidget> {
                                   IconButton(
                                     icon: Icon(Icons.add_circle,
                                         color: Colors.green, size: 28),
-                                    onPressed: increment,
+                                    onPressed: () {
+                                      context.read<RestaurantDetailBloc>().add(
+                                          AddToCart(
+                                              widget.item.card?.info?.id ?? ""
+                                          ));
+                                    },
                                     splashRadius: 20,
                                   ),
                                 ],

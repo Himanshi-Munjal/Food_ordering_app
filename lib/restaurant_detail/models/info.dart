@@ -14,6 +14,8 @@ part 'info.g.dart';
 class Info with _$Info {
   const factory Info({
     String? id,
+    @Default(0)
+    int timesAddedIntoCart,
     String? name,
     String? category,
     String? description,

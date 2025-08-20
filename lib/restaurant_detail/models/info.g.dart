@@ -8,6 +8,7 @@ part of 'info.dart';
 
 _$InfoImpl _$$InfoImplFromJson(Map<String, dynamic> json) => _$InfoImpl(
       id: json['id'] as String?,
+      timesAddedIntoCart: (json['timesAddedIntoCart'] as num?)?.toInt() ?? 0,
       name: json['name'] as String?,
       category: json['category'] as String?,
       description: json['description'] as String?,
@@ -53,6 +54,7 @@ _$InfoImpl _$$InfoImplFromJson(Map<String, dynamic> json) => _$InfoImpl(
 Map<String, dynamic> _$$InfoImplToJson(_$InfoImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'timesAddedIntoCart': instance.timesAddedIntoCart,
       'name': instance.name,
       'category': instance.category,
       'description': instance.description,

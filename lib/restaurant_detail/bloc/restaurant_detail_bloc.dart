@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:food_ordering/common/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../models/card_card.dart';
 import '../models/rd.dart';
 
 
@@ -40,11 +41,43 @@ class RestaurantDetailBloc extends Bloc<ResDetailEvent, RestaurantDetailState> {
   }
 
   FutureOr<void> _AddToCart(event, emit) async {
-    //TODO do this
+    updateCart(emit, event, 1);
+  }
+
+  void updateCart(emit, event, int itemAdded) {
+    if (state is ResDetailLoaded) {
+      final currentState = state as ResDetailLoaded;
+
+      final updatedItems = currentState.card.itemCards?.map((item) {
+        if (item.card?.info?.id == event.info.id) {
+          return item.copyWith(
+            card: item.card?.copyWith(
+              info: item.card?.info?.copyWith(
+                timesAddedIntoCart:
+                (item.card?.info?.timesAddedIntoCart ?? 0) + itemAdded,
+              ),
+            ),
+          );
+        }
+        // leave other items unchanged
+        return item;
+      }).toList();
+
+      final totalCartCount = updatedItems
+          ?.map((item) => item.card?.info?.timesAddedIntoCart ?? 0)
+          .fold(0, (prev, qty) => prev + qty) ??
+          0;
+      emit(
+        ResDetailLoaded(
+          currentState.card.copyWith(itemCards: updatedItems),
+          totalCartCount: totalCartCount,
+        ),
+      );
+    }
   }
 
   FutureOr<void> _DeleteFromCart(event, emit) async {
-    //TODO do this
+    updateCart(emit, event, -1);
   }
 
 }
