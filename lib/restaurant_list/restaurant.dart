@@ -10,6 +10,7 @@ class RestaurantData extends Equatable {
     required this.csrfToken,
   });
 
+
   final int? statusCode;
   final Data? data;
   final String? tid;

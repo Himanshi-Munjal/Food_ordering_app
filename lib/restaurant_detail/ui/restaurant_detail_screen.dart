@@ -14,7 +14,7 @@ class RestaurantDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => context.read<RestaurantDetailBloc>()
+      create: (context) => RestaurantDetailBloc()
         ..add(FetchResDetail(restaurantId)),
       child: ResDetailView(),
     );

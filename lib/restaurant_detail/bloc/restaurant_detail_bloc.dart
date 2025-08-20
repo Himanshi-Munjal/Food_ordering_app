@@ -49,7 +49,7 @@ class RestaurantDetailBloc extends Bloc<ResDetailEvent, RestaurantDetailState> {
       final currentState = state as ResDetailLoaded;
 
       final updatedItems = currentState.card.itemCards?.map((item) {
-        if (item.card?.info?.id == event.info.id) {
+        if (item.card?.info?.id == event.itemId) {
           return item.copyWith(
             card: item.card?.copyWith(
               info: item.card?.info?.copyWith(
