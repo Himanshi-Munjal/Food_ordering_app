@@ -60,8 +60,13 @@ class RestaurantDetailBloc extends Bloc<ResDetailEvent, RestaurantDetailState> {
           );
         }
         // leave other items unchanged
+
         return item;
       }).toList();
+
+      final cartItems = updatedItems
+          ?.where((item) => (item.card?.info?.timesAddedIntoCart ?? 0) > 0)
+          .toList();
 
       final totalCartCount = updatedItems
           ?.map((item) => item.card?.info?.timesAddedIntoCart ?? 0)
@@ -71,6 +76,7 @@ class RestaurantDetailBloc extends Bloc<ResDetailEvent, RestaurantDetailState> {
         ResDetailLoaded(
           currentState.card.copyWith(itemCards: updatedItems),
           totalCartCount: totalCartCount,
+          cartItems: cartItems
         ),
       );
     }
