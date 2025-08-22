@@ -35,11 +35,12 @@ class _CartWidgetState extends State<CartWidget> {
             } else if (state is CartDetailLoaded) {
               final items = state.cartItems ?? [];
 
-              return Column(
-                children: [
-                  // 🥘 Food Items List
-                  Expanded(
-                    child: ListView.separated(
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
                       padding: const EdgeInsets.all(12),
                       itemCount: items.length,
                       separatorBuilder: (_, __) => const SizedBox(height: 10),
@@ -69,15 +70,15 @@ class _CartWidgetState extends State<CartWidget> {
                                     color: Colors.grey.shade200,
                                     image: (item?.imageId != null)
                                         ? DecorationImage(
-                                      image: NetworkImage(
-                                          item!.imageId!), // your image url
-                                      fit: BoxFit.cover,
-                                    )
+                                            image: NetworkImage(item!
+                                                .imageId!), // your image url
+                                            fit: BoxFit.cover,
+                                          )
                                         : null,
                                   ),
                                   child: item?.imageId == null
                                       ? const Icon(Icons.fastfood,
-                                      color: Colors.grey)
+                                          color: Colors.grey)
                                       : null,
                                 ),
                                 const SizedBox(width: 12),
@@ -86,7 +87,7 @@ class _CartWidgetState extends State<CartWidget> {
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(item?.name ?? "Unknown",
                                           style: const TextStyle(
@@ -122,13 +123,15 @@ class _CartWidgetState extends State<CartWidget> {
                                           Icons.remove_circle_outline),
                                       color: Colors.redAccent,
                                       onPressed: (item != null &&
-                                          item.id != null &&
-                                          (item.timesAddedIntoCart ?? 0) > 0)
+                                              item.id != null &&
+                                              (item.timesAddedIntoCart ?? 0) >
+                                                  0)
                                           ? () {
-                                        context
-                                            .read<CartDetailBloc>()
-                                            .add(DeleteFromCart(item.id!));
-                                      }
+                                              context
+                                                  .read<CartDetailBloc>()
+                                                  .add(
+                                                      DeleteFromCart(item.id!));
+                                            }
                                           : null,
                                     ),
                                     Text(
@@ -138,16 +141,17 @@ class _CartWidgetState extends State<CartWidget> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     IconButton(
-                                      icon: const Icon(
-                                          Icons.add_circle_outline),
+                                      icon:
+                                          const Icon(Icons.add_circle_outline),
                                       color: Colors.green,
-                                      onPressed: (item != null && item.id != null)
-                                          ? () {
-                                        context
-                                            .read<CartDetailBloc>()
-                                            .add(AddToCart(item.id!));
-                                      }
-                                          : null,
+                                      onPressed:
+                                          (item != null && item.id != null)
+                                              ? () {
+                                                  context
+                                                      .read<CartDetailBloc>()
+                                                      .add(AddToCart(item.id!));
+                                                }
+                                              : null,
                                     ),
                                   ],
                                 )
@@ -156,64 +160,58 @@ class _CartWidgetState extends State<CartWidget> {
                           ),
                         );
                       },
+                      scrollDirection: Axis.vertical,
                     ),
-                  ),
-
-                  // 🚚 Delivery + Payment Options
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade50,
-                      borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(20)),
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade50,
+                        borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(20)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 10),
+                          const Text("💳 Payment Method",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 8),
+                          RadioListTile<String>(
+                            value: "online",
+                            groupValue: _selectedPayment,
+                            title: const Text("Pay Online"),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedPayment = value;
+                              });
+                            },
+                          ),
+                          RadioListTile<String>(
+                            value: "cod",
+                            groupValue: _selectedPayment,
+                            title: const Text("Cash on Delivery (COD)"),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedPayment = value;
+                              });
+                            },
+                          ),
+                          RadioListTile<String>(
+                            value: "upi",
+                            groupValue: _selectedPayment,
+                            title: const Text("Pay by UPI ID"),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedPayment = value;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("🚚 Deliver",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 10),
-
-                        const Text("💳 Payment Method",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 8),
-
-                        RadioListTile<String>(
-                          value: "online",
-                          groupValue: _selectedPayment,
-                          title: const Text("Pay Online"),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedPayment = value;
-                            });
-                          },
-                        ),
-                        RadioListTile<String>(
-                          value: "cod",
-                          groupValue: _selectedPayment,
-                          title: const Text("Cash on Delivery (COD)"),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedPayment = value;
-                            });
-                          },
-                        ),
-                        RadioListTile<String>(
-                          value: "upi",
-                          groupValue: _selectedPayment,
-                          title: const Text("Pay by UPI ID"),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedPayment = value;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               );
             } else if (state is CartDetailError) {
               return Center(child: Text("❌ ${state.message}"));
@@ -221,10 +219,9 @@ class _CartWidgetState extends State<CartWidget> {
             return Container();
           },
         ),
-
-        // 📌 Persistent Bottom Bar (Now includes total price)
-        bottomNavigationBar: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        bottomNavigationBar:                   Container(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
@@ -242,26 +239,31 @@ class _CartWidgetState extends State<CartWidget> {
                       0,
                           (sum, item) =>
                       sum +
-                          (item.card?.info?.timesAddedIntoCart ?? 0)) ??
+                          (item.card?.info?.timesAddedIntoCart ??
+                              0)) ??
                       0;
 
                   final totalPrice = state.cartItems?.fold<double>(
                       0,
                           (sum, item) =>
                       sum +
-                          ((item.card?.info?.timesAddedIntoCart ?? 0) *
-                              (item.card?.info?.price ?? 0).toDouble())) ??
+                          ((item.card?.info?.timesAddedIntoCart ??
+                              0) *
+                              (item.card?.info?.price ?? 0)
+                                  .toDouble())) ??
                       0.0;
 
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
+                        mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Items: $totalItems",
                               style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold)),
                           Text("Total: ₹ $totalPrice",
                               style: const TextStyle(
                                   fontSize: 16,
@@ -270,21 +272,25 @@ class _CartWidgetState extends State<CartWidget> {
                           if (_selectedPayment != null)
                             Text("Payment: $_selectedPayment",
                                 style: const TextStyle(
-                                    fontSize: 14, color: Colors.grey)),
+                                    fontSize: 14,
+                                    color: Colors.grey)),
                         ],
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("📍 Select Address clicked\n"
-                                "Payment: ${_selectedPayment ?? "Not Selected"}\n"
-                                "Total: ₹ $totalPrice"),
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(
+                            content: Text(
+                                "📍 Select Address clicked\n"
+                                    "Payment: ${_selectedPayment ?? "Not Selected"}\n"
+                                    "Total: ₹ $totalPrice"),
                           ));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.redAccent,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                              borderRadius:
+                              BorderRadius.circular(12)),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 12),
                         ),
@@ -297,7 +303,9 @@ class _CartWidgetState extends State<CartWidget> {
               },
             ),
           ),
-        ),
+        )
+        ,
+        // 📌 Persistent Bottom Bar (Now includes total price)
       ),
     );
   }

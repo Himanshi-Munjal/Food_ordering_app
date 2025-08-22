@@ -44,13 +44,13 @@ class ResDetailView extends StatelessWidget {
               children: [
                 ListView.separated(
                   itemCount: menuItems.length,
-                  separatorBuilder: (_, __) => const Divider(),
+                  separatorBuilder: (_, __) => const Divider(color: Colors.white,),
                   itemBuilder: (context, idx) =>
                       RestaurantDetailWidget(item: menuItems[idx]),
                   padding: const EdgeInsets.only(
-                    top: 12,
-                    left: 12,
-                    right: 12,
+                    top: 6,
+                    left: 6,
+                    right: 6,
                     bottom: 90, // 👈 Extra space at bottom so last item is visible
                   ),
                 ),
