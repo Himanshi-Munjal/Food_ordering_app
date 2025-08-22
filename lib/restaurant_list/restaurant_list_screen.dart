@@ -21,7 +21,14 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Restaurants near you')),
+      appBar: AppBar(
+        title: const Text(
+          "Restaurants near you",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.redAccent,
+        elevation: 0,
+      ),
       body: Center(
         child: FutureBuilder<RestaurantData>(
           future: restaurantData,
@@ -32,15 +39,15 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
                   [];
 
               return Padding(
-                padding: const EdgeInsets.all(6),
+                padding: const EdgeInsets.only(
+                    top: 10, left: 6, right: 6, bottom: 10),
                 child: GridView.builder(
                   itemCount: restaurants.length,
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 300,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    mainAxisExtent: 480
-                  ),
+                      maxCrossAxisExtent: 300,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                      mainAxisExtent: 480),
                   itemBuilder: (context, index) {
                     final restaurantName = restaurants[index].info?.name ?? "";
                     final restaurantArea =
