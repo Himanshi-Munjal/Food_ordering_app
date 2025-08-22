@@ -24,7 +24,7 @@ class _CartWidgetState extends State<CartWidget> {
       create: (_) => CartDetailBloc()..add(LoadCart(widget.cartItems)),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("🛒 Your Cart"),
+          title: const Text("🛒 Your Cart", style: TextStyle(color: Colors.white),),
           backgroundColor: Colors.redAccent,
           elevation: 0,
         ),
@@ -294,7 +294,7 @@ class _CartWidgetState extends State<CartWidget> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 12),
                         ),
-                        child: const Text("Select Address"),
+                        child: const Text("Select Address", style: TextStyle(color: Colors.white),),
                       ),
                     ],
                   );
