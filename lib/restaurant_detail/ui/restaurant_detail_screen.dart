@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_ordering/card_detail/cart_ui/cart_widget.dart';
+import 'package:food_ordering/cart/cart_ui/cart_widget.dart';
 import 'package:food_ordering/restaurant_detail/ui/restaurant_detail_widget.dart';
 
 import '../bloc/restaurant_detail_bloc.dart';
