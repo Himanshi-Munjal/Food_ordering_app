@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -18,71 +16,72 @@ class RestaurantListScreen extends StatefulWidget {
 }
 
 class _RestaurantListScreenState extends State<RestaurantListScreen> {
-
   late Future<RestaurantData> restaurantData;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Restaurants near you')),
+      appBar: AppBar(
+        title: const Text(
+          "Restaurants near you",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.redAccent,
+        elevation: 0,
+      ),
       body: Center(
         child: FutureBuilder<RestaurantData>(
           future: restaurantData,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              final restaurants =
-                  snapshot
-                      .data
-                      ?.data
-                      ?.cards[4]
-                      ?.card
-                      ?.card
-                      ?.gridElements
-                      ?.infoWithStyle
-                      ?.restaurants ??
-                      [];
+              final restaurants = snapshot.data?.data?.cards[4]?.card?.card
+                      ?.gridElements?.infoWithStyle?.restaurants ??
+                  [];
 
               return Padding(
-                padding: const EdgeInsets.all(6),
+                padding: const EdgeInsets.only(
+                    top: 10, left: 6, right: 6, bottom: 10),
                 child: GridView.builder(
                   itemCount: restaurants.length,
-                  gridDelegate:
-                  const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 380,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    mainAxisExtent: 290,
-                  ),
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 300,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                      mainAxisExtent: 480),
                   itemBuilder: (context, index) {
-                    final restaurantName =
-                        restaurants[index].info?.name ?? "";
+                    final restaurantName = restaurants[index].info?.name ?? "";
                     final restaurantArea =
                         restaurants[index].info?.areaName ?? "";
-                    final avgRating =
-                        restaurants[index].info?.avgRating ?? 0.0;
+                    final avgRating = restaurants[index].info?.avgRating ?? 0.0;
                     final restaurantImage =
                         restaurants[index].info?.cloudinaryImageId ?? "";
                     final sla = restaurants[index].info?.sla?.slaString ?? "";
                     //final cuisines = restaurants[index].info?.cuisines ?? [];
                     final cuisinesData = restaurants[index].info?.cuisines;
-                    final cuisines = (cuisinesData is List && cuisinesData != null)
-                        ? (cuisinesData.length > 3
-                        ? cuisinesData.sublist(0, 3).join(', ') + '...'
-                        : cuisinesData.join(', '))
-                        : '';
+                    final cuisines =
+                        (cuisinesData is List && cuisinesData != null)
+                            ? (cuisinesData.length > 3
+                                ? cuisinesData.sublist(0, 3).join(', ') + '...'
+                                : cuisinesData.join(', '))
+                            : '';
                     return RestaurantCard(
                       imageUrl:
-                      "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/$restaurantImage",
+                          "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/$restaurantImage",
                       title: restaurantName,
                       rating: avgRating,
                       time: sla,
                       category: cuisines,
                       location: restaurantArea,
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RestaurantDetailScreen(restaurantId: restaurants[index].info?.id ?? ""),),
+                            builder: (context) => RestaurantDetailScreen(
+                                restaurantId:
+                                    restaurants[index].info?.id ?? "",
+                                restaurantName:
+                                restaurants[index].info?.name ?? ""),
+                          ),
                         );
                       },
                     );
@@ -106,7 +105,6 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
   }
 }
 
-
 Future<RestaurantData> fetchRestaurants() async {
   final response = await http.get(
     Uri.parse("$baseUrl/getRestaurants"),
@@ -120,5 +118,3 @@ Future<RestaurantData> fetchRestaurants() async {
     throw Exception('Failed to load album');
   }
 }
-
-
