@@ -76,7 +76,8 @@ class RestaurantDetailBloc extends Bloc<ResDetailEvent, RestaurantDetailState> {
         ResDetailLoaded(
           currentState.card.copyWith(itemCards: updatedItems),
           totalCartCount: totalCartCount,
-          cartItems: cartItems
+          cartItems: cartItems,
+          totalCartCountStr: (totalCartCount == 1) ? "$totalCartCount item in cart" : "$totalCartCount items in cart"
         ),
       );
     }

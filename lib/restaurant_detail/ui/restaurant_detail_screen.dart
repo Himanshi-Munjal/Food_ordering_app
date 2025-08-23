@@ -88,7 +88,7 @@ class ResDetailView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "🛒 ${state.totalCartCount} items in cart",
+                            "🛒 ${state.totalCartCountStr}",
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
