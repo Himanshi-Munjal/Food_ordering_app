@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_ordering/address/ui/address_screen.dart';
 
 import '../../restaurant_detail/models/item_card.dart';
 import '../cart_bloc/cart_detail_bloc.dart';
@@ -16,7 +17,8 @@ class CartWidget extends StatefulWidget {
 }
 
 class _CartWidgetState extends State<CartWidget> {
-  String? _selectedPayment; // Track selected payment option
+  String? _selectedPayment;
+  String? _selectedAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class _CartWidgetState extends State<CartWidget> {
                 child: Column(
                   children: [
                     ListView.separated(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       padding: const EdgeInsets.all(12),
                       itemCount: items.length,
@@ -70,15 +72,14 @@ class _CartWidgetState extends State<CartWidget> {
                                     color: Colors.grey.shade200,
                                     image: (item?.imageId != null)
                                         ? DecorationImage(
-                                            image: NetworkImage(item!
-                                                .imageId!), // your image url
-                                            fit: BoxFit.cover,
-                                          )
+                                      image: NetworkImage(item!.imageId!),
+                                      fit: BoxFit.cover,
+                                    )
                                         : null,
                                   ),
                                   child: item?.imageId == null
                                       ? const Icon(Icons.fastfood,
-                                          color: Colors.grey)
+                                      color: Colors.grey)
                                       : null,
                                 ),
                                 const SizedBox(width: 12),
@@ -87,7 +88,7 @@ class _CartWidgetState extends State<CartWidget> {
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(item?.name ?? "Unknown",
                                           style: const TextStyle(
@@ -123,15 +124,14 @@ class _CartWidgetState extends State<CartWidget> {
                                           Icons.remove_circle_outline),
                                       color: Colors.redAccent,
                                       onPressed: (item != null &&
-                                              item.id != null &&
-                                              (item.timesAddedIntoCart ?? 0) >
-                                                  0)
+                                          item.id != null &&
+                                          (item.timesAddedIntoCart ?? 0) >
+                                              0)
                                           ? () {
-                                              context
-                                                  .read<CartDetailBloc>()
-                                                  .add(
-                                                      DeleteFromCart(item.id!));
-                                            }
+                                        context
+                                            .read<CartDetailBloc>()
+                                            .add(DeleteFromCart(item.id!));
+                                      }
                                           : null,
                                     ),
                                     Text(
@@ -142,16 +142,16 @@ class _CartWidgetState extends State<CartWidget> {
                                     ),
                                     IconButton(
                                       icon:
-                                          const Icon(Icons.add_circle_outline),
+                                      const Icon(Icons.add_circle_outline),
                                       color: Colors.green,
                                       onPressed:
-                                          (item != null && item.id != null)
-                                              ? () {
-                                                  context
-                                                      .read<CartDetailBloc>()
-                                                      .add(AddToCart(item.id!));
-                                                }
-                                              : null,
+                                      (item != null && item.id != null)
+                                          ? () {
+                                        context
+                                            .read<CartDetailBloc>()
+                                            .add(AddToCart(item.id!));
+                                      }
+                                          : null,
                                     ),
                                   ],
                                 )
@@ -160,7 +160,6 @@ class _CartWidgetState extends State<CartWidget> {
                           ),
                         );
                       },
-                      scrollDirection: Axis.vertical,
                     ),
                     Container(
                       padding: const EdgeInsets.all(16),
@@ -207,6 +206,10 @@ class _CartWidgetState extends State<CartWidget> {
                               });
                             },
                           ),
+                          if (_selectedAddress != null)
+                            Text("Address: $_selectedAddress",
+                                style: const TextStyle(
+                                    fontSize: 14, color: Colors.grey)),
                         ],
                       ),
                     ),
@@ -219,9 +222,8 @@ class _CartWidgetState extends State<CartWidget> {
             return Container();
           },
         ),
-        bottomNavigationBar:                   Container(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 16, vertical: 12),
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
@@ -239,18 +241,15 @@ class _CartWidgetState extends State<CartWidget> {
                       0,
                           (sum, item) =>
                       sum +
-                          (item.card?.info?.timesAddedIntoCart ??
-                              0)) ??
+                          (item.card?.info?.timesAddedIntoCart ?? 0)) ??
                       0;
 
                   final totalPrice = state.cartItems?.fold<double>(
                       0,
                           (sum, item) =>
                       sum +
-                          ((item.card?.info?.timesAddedIntoCart ??
-                              0) *
-                              (item.card?.info?.price ?? 0)
-                                  .toDouble())) ??
+                          ((item.card?.info?.timesAddedIntoCart ?? 0) *
+                              (item.card?.info?.price ?? 0).toDouble())) ??
                       0.0;
 
                   return Row(
@@ -262,8 +261,7 @@ class _CartWidgetState extends State<CartWidget> {
                         children: [
                           Text("Items: $totalItems",
                               style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold)),
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
                           Text("Total: ₹ $totalPrice",
                               style: const TextStyle(
                                   fontSize: 16,
@@ -272,29 +270,44 @@ class _CartWidgetState extends State<CartWidget> {
                           if (_selectedPayment != null)
                             Text("Payment: $_selectedPayment",
                                 style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey)),
+                                    fontSize: 14, color: Colors.grey)),
+
                         ],
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(
-                            content: Text(
-                                "📍 Select Address clicked\n"
-                                    "Payment: ${_selectedPayment ?? "Not Selected"}\n"
-                                    "Total: ₹ $totalPrice"),
-                          ));
+                        onPressed: () async {
+                          if (_selectedPayment == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                  Text("⚠️ Please select a payment method")),
+                            );
+                            return;
+                          }
+
+                          // Navigate to Address Screen and wait for result
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => AddressScreen(),
+                            ),
+                          );
+
+                          if (result != null && result is String) {
+                            setState(() {
+                              _selectedAddress = result;
+                            });
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.redAccent,
                           shape: RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(12)),
+                              borderRadius: BorderRadius.circular(12)),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 12),
                         ),
-                        child: const Text("Select Address"),
+
+                        child: Text((_selectedAddress != null) ? "Place order" : "Select Address"),
                       ),
                     ],
                   );
@@ -303,9 +316,7 @@ class _CartWidgetState extends State<CartWidget> {
               },
             ),
           ),
-        )
-        ,
-        // 📌 Persistent Bottom Bar (Now includes total price)
+        ),
       ),
     );
   }
