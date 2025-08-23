@@ -73,7 +73,7 @@ class RestaurantCard extends StatelessWidget {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
+                                end: Alignment.bottomCenter,
                               colors: [
                                 Colors.black.withOpacity(0.0),
                                 Colors.black.withOpacity(0.65),
@@ -113,8 +113,8 @@ class RestaurantCard extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        height: 22,
-                        width: 22,
+                        height: 18,
+                        width: 18,
                         decoration: const BoxDecoration(
                           color: Color(0xFF0ab25a),
                           shape: BoxShape.circle,
@@ -124,25 +124,25 @@ class RestaurantCard extends StatelessWidget {
                               Icon(Icons.star, size: 14, color: Colors.white),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 6),
                       Text(
                         rating.toString(),
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
-                          fontSize: 18,
+                          fontSize: 15,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 6),
                       const Text(
                         '•',
-                        style: TextStyle(fontSize: 18, color: Colors.black87),
+                        style: TextStyle(fontSize: 15, color: Colors.black87),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 6),
                       Text(
                         time,
                         style: const TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 18,
+                          fontSize: 15,
                         ),
                       ),
                     ],
