@@ -78,7 +78,9 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
                           MaterialPageRoute(
                             builder: (context) => RestaurantDetailScreen(
                                 restaurantId:
-                                    restaurants[index].info?.id ?? ""),
+                                    restaurants[index].info?.id ?? "",
+                                restaurantName:
+                                restaurants[index].info?.name ?? ""),
                           ),
                         );
                       },

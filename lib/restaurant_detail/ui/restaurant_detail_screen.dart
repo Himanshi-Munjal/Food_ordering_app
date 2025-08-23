@@ -9,26 +9,37 @@ import '../bloc/restaurant_detail_state.dart';
 
 class RestaurantDetailScreen extends StatelessWidget {
   final String restaurantId;
+  final String restaurantName;
 
-  const RestaurantDetailScreen({super.key, required this.restaurantId});
+  const RestaurantDetailScreen(
+      {super.key, required this.restaurantId, required this.restaurantName});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => RestaurantDetailBloc()
-        ..add(FetchResDetail(restaurantId)),
-      child: ResDetailView(),
+      create: (context) =>
+          RestaurantDetailBloc()..add(FetchResDetail(restaurantId)),
+      child: ResDetailView(restaurantName: restaurantName),
     );
   }
 }
+
 class ResDetailView extends StatelessWidget {
-  const ResDetailView({super.key});
+  final String restaurantName;
+  const ResDetailView({super.key, required this.restaurantName});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Menu')),
-
+      appBar: AppBar(
+        title: Text(
+          "$restaurantName's menu",
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.redAccent,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: BlocBuilder<RestaurantDetailBloc, RestaurantDetailState>(
         builder: (context, state) {
           if (state is ResDetailLoading) {
@@ -44,14 +55,17 @@ class ResDetailView extends StatelessWidget {
               children: [
                 ListView.separated(
                   itemCount: menuItems.length,
-                  separatorBuilder: (_, __) => const Divider(color: Colors.white,),
+                  separatorBuilder: (_, __) => const Divider(
+                    color: Colors.white,
+                  ),
                   itemBuilder: (context, idx) =>
                       RestaurantDetailWidget(item: menuItems[idx]),
                   padding: const EdgeInsets.only(
                     top: 6,
                     left: 6,
                     right: 6,
-                    bottom: 90, // 👈 Extra space at bottom so last item is visible
+                    bottom:
+                        90, // 👈 Extra space at bottom so last item is visible
                   ),
                 ),
                 Spacer(flex: 90),
@@ -61,8 +75,8 @@ class ResDetailView extends StatelessWidget {
                     left: 0,
                     right: 0,
                     child: Container(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         color: Colors.green[600],
                         borderRadius: const BorderRadius.only(
@@ -118,6 +132,3 @@ class ResDetailView extends StatelessWidget {
     );
   }
 }
-
-
-
