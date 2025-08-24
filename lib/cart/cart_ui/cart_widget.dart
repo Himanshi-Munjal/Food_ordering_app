@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering/address/ui/address_screen.dart';
 
+import '../../place_order/place_order_screen.dart';
 import '../../restaurant_detail/models/item_card.dart';
 import '../cart_bloc/cart_detail_bloc.dart';
 import '../cart_bloc/cart_state.dart';
@@ -285,18 +286,27 @@ class _CartWidgetState extends State<CartWidget> {
                             return;
                           }
 
-                          // Navigate to Address Screen and wait for result
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => AddressScreen(),
-                            ),
-                          );
+                          if(_selectedAddress == null) {
+                            // Navigate to Address Screen and wait for result
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => AddressScreen(),
+                              ),
+                            );
 
-                          if (result != null && result is String) {
-                            setState(() {
-                              _selectedAddress = result;
-                            });
+
+                            if (result != null && result is String) {
+                              setState(() {
+                                _selectedAddress = result;
+                              });
+                            }
+                          } else if(_selectedAddress != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => PlaceOrderScreen()),
+                            );
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -307,8 +317,8 @@ class _CartWidgetState extends State<CartWidget> {
                               horizontal: 20, vertical: 12),
                         ),
 
-
                         child: Text((_selectedAddress != null) ? "Place order" : "Select Address", style: TextStyle(color: Colors.white),),
+
 
                       ),
                     ],

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food_ordering/restaurant_list/restaurant.dart';
 import 'package:food_ordering/restaurant_list/restaurant_card_widget.dart';
 import 'package:http/http.dart' as http;
@@ -20,81 +21,89 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Restaurants near you",
-          style: TextStyle(color: Colors.white),
+    return WillPopScope(
+        onWillPop: () async {
+          // Exit the app when back button pressed
+          SystemNavigator.pop();
+          return false;
+        },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            "Restaurants near you",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.redAccent,
+          elevation: 0,
         ),
-        backgroundColor: Colors.redAccent,
-        elevation: 0,
+        body: Center(
+          child: FutureBuilder<RestaurantData>(
+            future: restaurantData,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final restaurants = snapshot.data?.data?.cards[4]?.card?.card
+                        ?.gridElements?.infoWithStyle?.restaurants ??
+                    [];
+      
+                return Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10, left: 6, right: 6, bottom: 10),
+                  child: GridView.builder(
+                    itemCount: restaurants.length,
+                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 300,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                        mainAxisExtent: 480),
+                    itemBuilder: (context, index) {
+                      final restaurantName = restaurants[index].info?.name ?? "";
+                      final restaurantArea =
+                          restaurants[index].info?.areaName ?? "";
+                      final avgRating = restaurants[index].info?.avgRating ?? 0.0;
+                      final restaurantImage =
+                          restaurants[index].info?.cloudinaryImageId ?? "";
+                      final sla = restaurants[index].info?.sla?.slaString ?? "";
+                      //final cuisines = restaurants[index].info?.cuisines ?? [];
+                      final cuisinesData = restaurants[index].info?.cuisines;
+                      final cuisines =
+                          (cuisinesData is List && cuisinesData != null)
+                              ? (cuisinesData.length > 3
+                                  ? cuisinesData.sublist(0, 3).join(', ') + '...'
+                                  : cuisinesData.join(', '))
+                              : '';
+                      return RestaurantCard(
+                        imageUrl:
+                            "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/$restaurantImage",
+                        title: restaurantName,
+                        rating: avgRating,
+                        time: sla,
+                        category: cuisines,
+                        location: restaurantArea,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RestaurantDetailScreen(
+                                  restaurantId:
+                                      restaurants[index].info?.id ?? "",
+                                  restaurantName:
+                                  restaurants[index].info?.name ?? ""),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+              return const CircularProgressIndicator();
+            },
+          ),
+        ),
       ),
-      body: Center(
-        child: FutureBuilder<RestaurantData>(
-          future: restaurantData,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final restaurants = snapshot.data?.data?.cards[4]?.card?.card
-                      ?.gridElements?.infoWithStyle?.restaurants ??
-                  [];
 
-              return Padding(
-                padding: const EdgeInsets.only(
-                    top: 10, left: 6, right: 6, bottom: 10),
-                child: GridView.builder(
-                  itemCount: restaurants.length,
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 300,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
-                      mainAxisExtent: 480),
-                  itemBuilder: (context, index) {
-                    final restaurantName = restaurants[index].info?.name ?? "";
-                    final restaurantArea =
-                        restaurants[index].info?.areaName ?? "";
-                    final avgRating = restaurants[index].info?.avgRating ?? 0.0;
-                    final restaurantImage =
-                        restaurants[index].info?.cloudinaryImageId ?? "";
-                    final sla = restaurants[index].info?.sla?.slaString ?? "";
-                    //final cuisines = restaurants[index].info?.cuisines ?? [];
-                    final cuisinesData = restaurants[index].info?.cuisines;
-                    final cuisines =
-                        (cuisinesData is List && cuisinesData != null)
-                            ? (cuisinesData.length > 3
-                                ? cuisinesData.sublist(0, 3).join(', ') + '...'
-                                : cuisinesData.join(', '))
-                            : '';
-                    return RestaurantCard(
-                      imageUrl:
-                          "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/$restaurantImage",
-                      title: restaurantName,
-                      rating: avgRating,
-                      time: sla,
-                      category: cuisines,
-                      location: restaurantArea,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RestaurantDetailScreen(
-                                restaurantId:
-                                    restaurants[index].info?.id ?? "",
-                                restaurantName:
-                                restaurants[index].info?.name ?? ""),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
-            }
-            return const CircularProgressIndicator();
-          },
-        ),
-      ),
     );
   }
 
